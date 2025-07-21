@@ -12,7 +12,6 @@ export default function ForgotPasswordPage() {
         throw new Error(response.message || "Erro ao enviar email de recuperação")
       }
     } catch (error) {
-      // O erro será tratado pelo componente ForgotPasswordForm
       throw error
     }
   }

@@ -98,7 +98,7 @@ export class AuthAPI {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ password, confirmPassword, token }),
+        body: JSON.stringify({ password, confirm_password:confirmPassword, token }),
       })
 
       if (!response.ok) {

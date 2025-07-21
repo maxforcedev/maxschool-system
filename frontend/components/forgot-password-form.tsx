@@ -66,7 +66,7 @@ export function ForgotPasswordForm({ onSendReset, onBackToLogin }: ForgotPasswor
             <h1 className="text-2xl font-bold text-gray-800 mb-4">Email Enviado!</h1>
 
             <p className="text-gray-600 mb-6">
-              Enviamos um link de recuperação de senha para <strong>{email}</strong>. Verifique sua caixa de entrada e
+              Se o email <strong>{email}</strong> estiver cadastrado em nosso sistema enviaremos um link de recuperação de senha. <p></p> Verifique sua caixa de entrada e
               siga as instruções.
             </p>
 
