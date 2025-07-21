@@ -37,7 +37,7 @@ class LoginView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ForgoutPasswordView(APIView):
+class ForgotPasswordView(APIView):
     def post(self, request):
         email = request.data.get('email')
         if email:
@@ -47,6 +47,6 @@ class ForgoutPasswordView(APIView):
                 return Response({'error': 'Se o e-mail estiver correto, você receberá um link'}, status=status.HTTP_200_OK)
 
             token = utils.create_reset_token(user)
-            print(token)
+            utils.send_reset_email(user, token)
             return Response({'error': 'Se o e-mail estiver correto, você receberá um link'}, status=status.HTTP_200_OK)
         return Response({'error': 'O campo email é obrigatorio.'}, status=status.HTTP_400_BAD_REQUEST)

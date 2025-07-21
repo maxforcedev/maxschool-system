@@ -14,6 +14,15 @@ CORS_ALLOWED_ORIGINS = [
 
 AUTH_USER_MODEL = 'accounts.User'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'email.maxforcedev@gmail.com'
+EMAIL_HOST_PASSWORD = 'emaildev2025'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
