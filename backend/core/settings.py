@@ -19,7 +19,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'email.maxforcedev@gmail.com'
-EMAIL_HOST_PASSWORD = 'emaildev2025'
+EMAIL_HOST_PASSWORD = 'hpev hzic hxlk tvrm'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
