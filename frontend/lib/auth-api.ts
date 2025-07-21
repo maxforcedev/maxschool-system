@@ -17,16 +17,21 @@ export interface LoginResponse {
   message?: string
 }
 
+export interface ForgotPasswordResponse {
+  success: boolean
+  message?: string
+}
+
 export class AuthAPI {
   private baseURL: string
 
-  constructor(baseURL = process.env.NEXT_PUBLIC_API_URL || "/api") {
+  constructor(baseURL = "/api") {
     this.baseURL = baseURL
   }
 
   async login(credentials: LoginCredentials): Promise<LoginResponse> {
     try {
-      const response = await fetch(`${this.baseURL}/auth/login/`, {
+      const response = await fetch(`${this.baseURL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,29 +43,43 @@ export class AuthAPI {
         throw new Error("Erro na requisição")
       }
 
-      const data = await response.json()
+      const data: LoginResponse = await response.json()
 
-      // Armazenar tokens
-      if (data.access) {
+      if (data.success && data.token) {
+        // Salvar token no localStorage ou cookie
         if (credentials.rememberMe) {
-          localStorage.setItem("auth_token", data.access)
-          localStorage.setItem("refresh_token", data.refresh)
+          localStorage.setItem("auth_token", data.token)
         } else {
-          sessionStorage.setItem("auth_token", data.access)
-          sessionStorage.setItem("refresh_token", data.refresh)
+          sessionStorage.setItem("auth_token", data.token)
         }
       }
 
-      return {
-        success: true,
-        token: data.access,
-        user: data.user,
-      }
+      return data
     } catch (error) {
       throw new Error("Email ou senha inválidos")
     }
   }
 
+  async forgotPassword(email: string): Promise<ForgotPasswordResponse> {
+    try {
+      const response = await fetch(`${this.baseURL}/auth/forgot-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Erro na requisição")
+      }
+
+      const data: ForgotPasswordResponse = await response.json()
+      return data
+    } catch (error) {
+      throw new Error("Erro ao enviar email de recuperação. Verifique se o email está correto.")
+    }
+  }
 
   async logout(): Promise<void> {
     localStorage.removeItem("auth_token")

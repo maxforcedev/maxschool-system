@@ -13,9 +13,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 
 interface LoginFormProps {
   onLogin?: (credentials: { email: string; password: string; rememberMe: boolean }) => Promise<void>
+  onForgotPassword?: () => void
 }
 
-export function LoginForm({ onLogin }: LoginFormProps) {
+export function LoginForm({ onLogin, onForgotPassword }: LoginFormProps) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [rememberMe, setRememberMe] = useState(false)
@@ -51,6 +52,15 @@ export function LoginForm({ onLogin }: LoginFormProps) {
       setError(err instanceof Error ? err.message : "Erro ao fazer login")
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const handleForgotPassword = () => {
+    if (onForgotPassword) {
+      onForgotPassword()
+    } else {
+      // Fallback para demonstração
+      window.location.href = "/forgot-password"
     }
   }
 
@@ -156,16 +166,13 @@ export function LoginForm({ onLogin }: LoginFormProps) {
           </form>
 
           <div className="text-center mt-6">
-            <a
-              href="#"
+            <button
+              type="button"
+              onClick={handleForgotPassword}
               className="text-sm text-blue-600 hover:text-blue-800 hover:underline transition-colors duration-200"
-              onClick={(e) => {
-                e.preventDefault()
-                alert("Funcionalidade de recuperação de senha em desenvolvimento")
-              }}
             >
               Esqueceu sua senha?
-            </a>
+            </button>
           </div>
         </CardContent>
       </Card>

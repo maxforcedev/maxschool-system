@@ -1,7 +1,9 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.contrib.auth import get_user_model
 from . import serializers, utils
+User = get_user_model()
 
 
 class RegisterView(generics.CreateAPIView):
@@ -35,8 +37,16 @@ class LoginView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-def create_token_reset(user):
-
+class ForgoutPasswordView(APIView):
     def post(self, request):
-        token = utils.generate_token(45)
-        
+        email = request.data.get('email')
+        if email:
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                return Response({'error': 'Se o e-mail estiver correto, você receberá um link'}, status=status.HTTP_200_OK)
+
+            token = utils.create_reset_token(user)
+            print(token)
+            return Response({'error': 'Se o e-mail estiver correto, você receberá um link'}, status=status.HTTP_200_OK)
+        return Response({'error': 'O campo email é obrigatorio.'}, status=status.HTTP_400_BAD_REQUEST)
