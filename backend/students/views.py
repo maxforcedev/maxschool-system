@@ -2,12 +2,19 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import NotFound
 from . import serializers, models, utils
 from classes.models import Classroom
 
 
 class StudentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        try:
+            return super().get_object()
+        except:
+            raise NotFound(detail='Aluno não encontrado.')
 
     def get_queryset(self):
         user = self.request.user
@@ -38,6 +45,12 @@ class StudentViewSet(viewsets.ModelViewSet):
 
         read_serializer = serializers.StudentSerializer(student)
         return Response(read_serializer.data, status=status.HTTP_201_CREATED)
+
+    def destroy(self, request, *args, **kwargs):
+        student = self.get_object()
+        student.status = 'inactive'
+        student.save()
+        return Response({'detail': 'Aluno foi desativado com sucesso.'}, status=200)
 
     @action(detail=False, methods=['patch'], url_path='my')
     def update_my_data(self, request):

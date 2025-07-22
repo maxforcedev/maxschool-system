@@ -1,4 +1,5 @@
 from pathlib import Path
+from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -7,6 +8,11 @@ SECRET_KEY = 'django-insecure-=mr*mi!_thnyc#5yg*4d%y@_mepg@lp&7-0mdvi!#lgoi9@%fb
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",

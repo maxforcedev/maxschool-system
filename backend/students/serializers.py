@@ -59,7 +59,9 @@ class UserWriteSerializer(serializers.ModelSerializer):
         user = User(
             name=validated_data['name'],
             email=validated_data['email'].lower().strip(),
-            user_type=validated_data['user_type', 'student'],
+            user_type='student',
+            cpf=validated_data['cpf'],
+            phone=validated_data['phone']
         )
         user.set_password(validated_data['password'])
         user.save()
@@ -99,12 +101,23 @@ class StudentWriteSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        user_data = validated_data.pop('user')
-        user_data.pop('user_type', None)
-        user_data['user_type'] = 'student'
+        user_data = validated_data.pop("user")
+        birth_date = validated_data.get("birth_date")
+
+        if birth_date:
+            raw_password = birth_date.strftime("%d%m%Y")
+            user_data["password"] = raw_password
+        else:
+            raw_password = User.objects.make_random_password()
+            user_data["password"] = raw_password
+
+        user_data["user_type"] = "student"
+
         user_serializer = UserWriteSerializer(data=user_data)
         user_serializer.is_valid(raise_exception=True)
         user = user_serializer.save()
+
+        user.raw_password = raw_password
 
         student = Student.objects.create(user=user, **validated_data)
         return student

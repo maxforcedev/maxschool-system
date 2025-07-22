@@ -330,8 +330,12 @@
                     <span class="credential-value">{{user_role}}</span>
                 </div>
                 <div class="credential-item">
+                    <span class="credential-label">Senha:</span>
+                    <span class="credential-value">Data de nascimento ({{initial_password}})</span>
+                </div>
+                <div class="credential-item">
                     <span class="credential-label">Data de Cadastro:</span>
-                    <span class="credential-value">{{enrollment_date}}</span>
+                    <span class="credential-value">{{enrollment_date|date:"d/m/Y H:i" }}</span>
                 </div>
             </div>
             

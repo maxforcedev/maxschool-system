@@ -2,16 +2,16 @@
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
-from django.utils import timezone
 
 
 def sendmail_welcome(user):
     subject = "Seja bem vindo - Sistema Escolar"
     html_content = render_to_string("emails/send_welcome.html", {
-        "registration_date": timezone.now(),
+        "enrollment_date": user.created_at,
         "user_name": user.name,
         "user_email": user.email,
-        "user_role": user.user_type,
+        "user_role": user.get_user_type_display(),
+        "initial_password": getattr(user, "raw_password", "********"),
         "site_url": "https://localhost:3000/",
         "login_url": "https://localhost:3000/login",
         "support_url": "https://localhost:3000/",
