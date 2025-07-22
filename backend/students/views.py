@@ -3,31 +3,44 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import NotFound
+from django.http import Http404
+
 from . import serializers, models, utils
 from classes.models import Classroom
+from core.permissions import IsSchoolStaff, IsStudentSelf
 
 
 class StudentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [IsAuthenticated(), IsSchoolStaff()]
+        if self.action == 'update_my_data':
+            return [IsAuthenticated(), IsStudentSelf()]
+        if self.action in ['list', 'retrieve']:
+            return [IsAuthenticated(), IsSchoolStaff()]
+        return super().get_permissions()
+
     def get_object(self):
         try:
             return super().get_object()
-        except:
+        except Http404:
             raise NotFound(detail='Aluno não encontrado.')
 
     def get_queryset(self):
         user = self.request.user
+        qs = models.Student.objects.select_related('user', 'classroom')
 
         if user.is_superuser or user.usertype in ['admin', 'director', 'coordinator', 'secretary']:
-            return models.Student.objects.all()
+            return qs
 
         elif user.usertype == 'teacher':
             classroom = Classroom.objects.filter(teacher_responsible=user)
-            return models.Student.objects.filter(classroom__in=classroom)
+            return qs.filter(classroom__in=classroom)
 
         elif user.usertype == 'student':
-            return models.Student.objects.filter(user=user)
+            return qs.filter(user=user)
 
         return models.Student.objects.none()
 
