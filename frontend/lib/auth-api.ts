@@ -88,7 +88,7 @@ export class AuthAPI {
       const data: ForgotPasswordResponse = await response.json()
       return data
     } catch (error) {
-      throw new Error("Erro ao enviar email de recuperação. Verifique se o email está correto.")
+      throw new Error("Erro ao enviar email de recuperação, tente novamente mais tarde.")
     }
   }
   async resetPassword(password: string, confirmPassword: string, token: string): Promise<ResetPasswordResponse> {

@@ -65,7 +65,7 @@ class ResetPasswordView(APIView):
             user.save()
 
             token_obj.delete()
-            return Response({"message": "Senha redefinida com sucesso."}, status=status.HTTP_200_OK)
+            return Response({"success": True, "message": "Senha redefinida com sucesso."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
