@@ -21,7 +21,7 @@ def create_reset_token(user):
     return None
 
 
-def send_reset_email(user, token):
+def sendmail_reset_email(user, token):
     reset_url = f"https://localhost:3000/reset-password?token={token}"
     subject = "Recuperação de senha - Sistema Escolar"
     html_content = render_to_string("emails/reset_password.html", {

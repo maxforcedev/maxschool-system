@@ -10,6 +10,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=150)
     email = models.EmailField(unique=True)
+    cpf = models.CharField('CPF', unique=True, max_length=14)
+    phone = models.CharField('Telefone', max_length=1)
     user_type = models.CharField(
         max_length=20,
         choices=choices.UserType.choices,

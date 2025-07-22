@@ -48,7 +48,7 @@ class ForgotPasswordView(APIView):
                 return Response({'success': 'Se o e-mail estiver correto, você receberá um link'}, status=status.HTTP_200_OK)
 
             token = utils.create_reset_token(user)
-            utils.send_reset_email(user, token)
+            utils.sendmail_reset_email(user, token)
             return Response({'success': 'Se o e-mail estiver correto, você receberá um link'}, status=status.HTTP_200_OK)
         return Response({'error': 'O campo email é obrigatorio.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -66,7 +66,6 @@ class ResetPasswordView(APIView):
 
             token_obj.delete()
             return Response({"message": "Senha redefinida com sucesso."}, status=status.HTTP_200_OK)
-        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

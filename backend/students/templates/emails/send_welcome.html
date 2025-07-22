@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao MaxSchool</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            line-height: 1.6;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .email-header {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .logo-container {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo {
+            font-size: 32px;
+            color: white;
+        }
+        
+        .email-header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .email-header .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin: 0;
+        }
+        
+        .welcome-banner {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .welcome-banner h2 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .welcome-banner p {
+            margin: 10px 0 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .email-body {
+            padding: 40px 30px;
+        }
+        
+        .greeting {
+            font-size: 20px;
+            color: #374151;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .message {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+        
+        .credentials-box {
+            background-color: #f9fafb;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .credentials-box h4 {
+            margin: 0 0 16px;
+            color: #374151;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .credential-item {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 12px;
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .credential-label {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .credential-value {
+            font-family: 'Courier New', monospace;
+            background-color: #f3f4f6;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #1f2937;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            padding: 40px 30px;
+            text-align: center;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+        
+        .cta-section h3 {
+            margin: 0 0 16px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #374151;
+        }
+        
+        .cta-section p {
+            margin: 0 0 24px;
+            font-size: 16px;
+            color: #6b7280;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            text-align: center;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+        }
+        
+        .info-section {
+            background-color: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        
+        .info-section h3 {
+            margin: 0 0 12px;
+            color: #1e40af;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .info-section p {
+            margin: 0;
+            color: #1e40af;
+            font-size: 14px;
+        }
+        
+        .support-section {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        
+        .support-section h3 {
+            margin: 0 0 12px;
+            color: #92400e;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .support-section p {
+            margin: 0;
+            color: #92400e;
+            font-size: 14px;
+        }
+        
+        .email-footer {
+            background-color: #f9fafb;
+            padding: 40px 30px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .footer-text {
+            font-size: 14px;
+            color: #6b7280;
+            margin: 0 0 20px;
+        }
+        
+        .footer-links {
+            margin: 20px 0;
+        }
+        
+        .footer-links a {
+            color: #2563eb;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .copyright {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 20px;
+        }
+        
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .email-header,
+            .welcome-banner,
+            .email-body,
+            .cta-section,
+            .email-footer {
+                padding: 20px;
+            }
+            
+            .email-header h1 {
+                font-size: 28px;
+            }
+            
+            .welcome-banner h2 {
+                font-size: 24px;
+            }
+            
+            .cta-button {
+                display: block;
+                width: 100%;
+                box-sizing: border-box;
+                margin: 10px 0;
+            }
+            
+            .credential-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="email-header">
+            <div class="logo-container">
+                <div class="logo">🎓</div>
+            </div>
+            <h1>MaxSchool</h1>
+            <p class="subtitle">Sua jornada educacional começa aqui</p>
+        </div>
+        
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+            <h2>Bem-vindo(a), {{user_name}}! 🎉</h2>
+            <p>Estamos muito felizes em tê-lo(a) conosco</p>
+        </div>
+        
+        <!-- Body -->
+        <div class="email-body">
+            <div class="greeting">
+                Olá, {{user_name}}!
+            </div>
+            
+            <div class="message">
+                É com grande satisfação que damos as boas-vindas ao <strong>MaxSchool</strong>, 
+                a plataforma educacional mais completa e moderna do mercado. Sua conta foi criada 
+                com sucesso e você já pode começar a explorar todas as funcionalidades disponíveis.
+            </div>
+            
+            <!-- Credentials Section -->
+            <div class="credentials-box">
+                <h4>🔐 Suas credenciais de acesso:</h4>
+                <div class="credential-item">
+                    <span class="credential-label">Email:</span>
+                    <span class="credential-value">{{user_email}}</span>
+                </div>
+                <div class="credential-item">
+                    <span class="credential-label">Perfil:</span>
+                    <span class="credential-value">{{user_role}}</span>
+                </div>
+                <div class="credential-item">
+                    <span class="credential-label">Data de Cadastro:</span>
+                    <span class="credential-value">{{enrollment_date}}</span>
+                </div>
+            </div>
+            
+            <!-- CTA Section -->
+            <div class="cta-section">
+                <h3>Pronto para começar?</h3>
+                <p>Acesse sua conta agora e descubra tudo o que o MaxSchool pode oferecer para você.</p>
+                <a href="{{login_url}}" class="cta-button">Acessar Minha Conta</a>
+            </div>
+            
+            <!-- Info Section -->
+            <div class="info-section">
+                <h3>💡 Primeiros Passos</h3>
+                <p>
+                    Recomendamos que você complete seu perfil e explore a plataforma para 
+                    aproveitar ao máximo todas as funcionalidades disponíveis. Isso levará 
+                    apenas alguns minutos e fará toda a diferença na sua experiência.
+                </p>
+            </div>
+            
+            <!-- Support Section -->
+            <div class="support-section">
+                <h3>🆘 Precisa de Ajuda?</h3>
+                <p>
+                    Nossa equipe de suporte está sempre disponível para ajudá-lo(a). 
+                    Entre em contato conosco através do email <strong>suporte@maxschool.com</strong> 
+                </p>
+            </div>
+            
+            <div class="message">
+                Mais uma vez, seja muito bem-vindo(a) ao MaxSchool! Estamos ansiosos para 
+                acompanhar sua jornada de aprendizado e crescimento conosco.
+            </div>
+            
+            <div class="message">
+                <strong>Equipe MaxSchool</strong><br>
+                <em>"Transformando educação, construindo futuros"</em>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="email-footer">
+            <p class="footer-text">
+                Este email foi enviado automaticamente. Por favor, não responda diretamente.
+            </p>
+            
+            <div class="footer-links">
+                <a href="{{site_url}}">Acessar MaxSchool</a>
+                <a href="{{support_url}}">Central de Ajuda</a>
+                <a href="{{contact_url}}">Contato</a>
+            </div>
+            
+            <p class="copyright">
+                © 2025 MaxSchool. Todos os direitos reservados.<br>
+                Este email foi enviado para {{user_email}}<br>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

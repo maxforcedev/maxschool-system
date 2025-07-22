@@ -1,5 +1,5 @@
 "use client"
-import { LoginForm } from "./components/login-form"
+import { LoginForm } from "./components/auth/login-form"
 import { authAPI, type LoginCredentials } from "./lib/auth-api"
 import { GraduationCap, BookOpen, Users, Award } from "lucide-react"
 

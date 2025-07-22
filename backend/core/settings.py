@@ -32,8 +32,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-
+    'core',
     'accounts',
+    'students',
+    'classes',
 ]
 
 REST_FRAMEWORK = {

@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import type { User, Class, Student, Grade, Schedule, Message } from "../types"
+import type { User, Class, Student, Grade, Schedule, Message } from "../../types"
 
 interface TeacherDashboardProps {
   currentUser: User

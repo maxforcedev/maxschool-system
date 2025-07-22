@@ -1,6 +1,6 @@
 "use client"
 
-import { ForgotPasswordForm } from "././components/forgot-password-form"
+import { ForgotPasswordForm } from "./components/auth/forgot-password-form"
 import { authAPI } from "./lib/auth-api"
 
 export default function ForgotPasswordPage() {

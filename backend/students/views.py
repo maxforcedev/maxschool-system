@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework import generics
+from . import serializers, models
 
-# Create your views here.
+
+class StudentCreateView(generics.ListCreateAPIView):
+    model = models.Student
+    serializer_class = serializers.StudentWriteSerializer
+    queryset = models.Student.objects.all()

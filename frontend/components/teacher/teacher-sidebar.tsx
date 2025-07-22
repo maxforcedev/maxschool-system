@@ -1,6 +1,6 @@
 "use client"
 
-import { BookOpen, GraduationCap, MessageSquare, Calendar, FileText, LogOut, User } from "lucide-react"
+import { BookOpen, Users, MessageSquare, BarChart3, Calendar, LogOut, GraduationCap } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -13,15 +13,27 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { UserSwitcher } from "./user-switcher"
-import type { User as UserType } from "../types"
+import { UserSwitcher } from ".././user-switcher"
+import type { User } from "../../types"
 
-const studentMenuItems = [
+const teacherMenuItems = [
   {
     title: "Dashboard",
-    icon: BookOpen,
+    icon: BarChart3,
     url: "#dashboard",
     key: "dashboard",
+  },
+  {
+    title: "Turmas",
+    icon: BookOpen,
+    url: "#classes",
+    key: "classes",
+  },
+  {
+    title: "Alunos",
+    icon: Users,
+    url: "#students",
+    key: "students",
   },
   {
     title: "Notas",
@@ -30,50 +42,44 @@ const studentMenuItems = [
     key: "grades",
   },
   {
-    title: "Horários",
-    icon: Calendar,
-    url: "#schedule",
-    key: "schedule",
-  },
-  {
-    title: "Atividades",
-    icon: FileText,
-    url: "#assignments",
-    key: "assignments",
-  },
-  {
     title: "Mensagens",
     icon: MessageSquare,
     url: "#messages",
     key: "messages",
   },
+  {
+    title: "Horários",
+    icon: Calendar,
+    url: "#schedule",
+    key: "schedule",
+  },
 ]
 
-interface StudentSidebarProps {
-  users: UserType[]
-  currentUser: UserType
-  onUserChange: (user: UserType) => void
+interface TeacherSidebarProps {
+  users: User[]
+  currentUser: User
+  onUserChange: (user: User) => void
   activeSection: string
   onSectionChange: (section: string) => void
 }
 
-export function StudentSidebar({
+export function TeacherSidebar({
   users,
   currentUser,
   onUserChange,
   activeSection,
   onSectionChange,
-}: StudentSidebarProps) {
+}: TeacherSidebarProps) {
   return (
     <Sidebar className="border-r border-gray-200">
       <SidebarHeader className="border-b border-gray-200 p-4">
         <div className="flex items-center space-x-3 mb-4">
-          <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
-            <User className="w-6 h-6 text-white" />
+          <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+            <GraduationCap className="w-6 h-6 text-white" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-gray-800">MaxSchool</h2>
-            <p className="text-sm text-gray-600">Portal do Aluno</p>
+            <p className="text-sm text-gray-600">Portal do Professor</p>
           </div>
         </div>
         <UserSwitcher users={users} currentUser={currentUser} onUserChange={onUserChange} />
@@ -83,7 +89,7 @@ export function StudentSidebar({
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-2">
-              {studentMenuItems.map((item) => (
+              {teacherMenuItems.map((item) => (
                 <SidebarMenuItem key={item.key}>
                   <SidebarMenuButton
                     onClick={() => onSectionChange(item.key)}

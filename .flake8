@@ -1,4 +1,4 @@
 [flake8]
 
-exclude = venv,
+exclude = venv, __init__
 ignore = E501, W504

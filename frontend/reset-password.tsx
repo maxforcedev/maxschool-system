@@ -1,9 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ResetPasswordForm } from "@/components/reset-password-form"
-import { InvalidToken } from "@/components/invalid-token"
-import { PasswordSuccess } from "@/components/password-success"
+import { ResetPasswordForm } from "@/components/auth/reset-password-form"
+import { InvalidToken } from "@/components/auth/invalid-token"
+import { PasswordSuccess } from "@/components/auth/password-success"
 import { authAPI } from "@/lib/auth-api"
 
 interface ResetPasswordPageProps {
