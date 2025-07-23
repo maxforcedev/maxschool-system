@@ -13,6 +13,11 @@ class IsStudentSelf(BasePermission):
         return request.user.is_authenticated and obj.user == request.user
 
 
+class IsResponsibleSelf(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return request.user.is_authenticated and obj.user == request.user
+
+
 class IsTeacherOfStudent(BasePermission):
     def has_object_permission(self, request, view, obj):
         teacher = request.user

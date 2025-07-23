@@ -11,9 +11,7 @@ class Student(models.Model):
     exit_date = models.DateField('Data de saída', blank=True, null=True)
     notes = models.TextField('Observações internas', blank=True, null=True)
     classroom = models.ForeignKey('classes.Classroom', on_delete=models.SET_NULL, null=True, blank=True, related_name='students')
-
-    # TODO:
-    #  responsibles = models.ManyToManyField('responsibles.Responsible', related_name='students')
+    responsibles = models.ManyToManyField('responsibles.Responsible', related_name='students')
 
     def __str__(self):
         return self.user.name
