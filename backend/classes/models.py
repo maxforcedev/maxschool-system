@@ -1,8 +1,10 @@
+import uuid
 from django.db import models
 from core import choices
 
 
 class Classroom(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField('Nome da turma: 0ª ANO', max_length=15)
     year = models.PositiveIntegerField('Ano letivo')
     teacher_responsible = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='responsible_classroom')

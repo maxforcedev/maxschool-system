@@ -1,17 +1,21 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from rest_framework.filters import OrderingFilter
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import NotFound
 from django.http import Http404
 
-from . import serializers, models, utils
+from . import serializers, models, utils, filters
 from classes.models import Classroom
 from core.permissions import IsSchoolStaff, IsStudentSelf
 
 
 class StudentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
+    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
+    ordering_fields = ['user__name', 'birth_date', 'enrollment_date']
+    ordering = ['user__name']  # padrão
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
