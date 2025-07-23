@@ -4,6 +4,8 @@ from accounts.models import User
 from classes.models import Classroom
 from core.models.model_address import Address
 from core import validators
+from responsibles.models import Responsible
+from responsibles.serializers import ResponsibleSerializer
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -72,6 +74,7 @@ class StudentSerializer(serializers.ModelSerializer):
     address = AddressSerializer(source='user.address', read_only=True)
     user = UserReadSerializer(read_only=True)
     classroom = ClassroomSerializer(read_only=True)
+    responsibles = ResponsibleSerializer(many=True, read_only=True)
 
     class Meta:
         model = Student
@@ -88,6 +91,7 @@ class StudentSerializer(serializers.ModelSerializer):
 
 class StudentWriteSerializer(serializers.ModelSerializer):
     user = UserWriteSerializer()
+    responsable = serializers.PrimaryKeyRelatedField(queryset=Responsible.objects.all(), many=True, required=False)
 
     class Meta:
         model = Student
@@ -119,5 +123,8 @@ class StudentWriteSerializer(serializers.ModelSerializer):
 
         user.raw_password = raw_password
 
+        responsibles = validated_data.pop('responsibles', [])
         student = Student.objects.create(user=user, **validated_data)
+        student.responsibles.set(responsibles)
+
         return student
