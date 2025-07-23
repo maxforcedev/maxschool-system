@@ -6,9 +6,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import NotFound
 from django.http import Http404
 
-from . import serializers, models, utils, filters
+from . import serializers, models, filters
 from classes.models import Classroom
 from core.permissions import IsSchoolStaff, IsStudentSelf
+from core.utils import sendmail_welcome
 
 
 class StudentViewSet(viewsets.ModelViewSet):
@@ -58,7 +59,7 @@ class StudentViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         student = serializer.save()
 
-        utils.sendmail_welcome(student.user)
+        sendmail_welcome(student.user)
 
         read_serializer = serializers.StudentSerializer(student)
         return Response(read_serializer.data, status=status.HTTP_201_CREATED)
