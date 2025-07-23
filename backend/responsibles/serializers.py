@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from models import Responsible
 from students.serializers import UserWriteSerializer, AddressSerializer, UserReadSerializer
-from core.utils import 
 
 
 class ResponsibleWriteSerializer(serializers.ModelSerializer):
