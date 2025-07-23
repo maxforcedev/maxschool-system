@@ -30,3 +30,12 @@ class Period(models.TextChoices):
     AFTERNOON = 'afternoon', 'Tarde'
     EVENING = 'evening', 'Noite'
     FULL = 'full', 'Integral'
+
+
+class RelationshipType(models.TextChoices):
+    MAE = 'mother', 'Mãe'
+    PAI = 'father', 'Pai'
+    TUTOR = 'tutor', 'Tutor(a)'
+    AVOS = 'avos', 'Avô/Avó'
+    IRMAO = 'irmao', 'Irmão(ã)'
+    OUTRO = 'outro', 'Outro'
