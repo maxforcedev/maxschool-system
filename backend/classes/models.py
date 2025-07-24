@@ -1,9 +1,10 @@
 import uuid
 from django.db import models
 from core import choices
+from schools.models import BaseModel
 
 
-class Classroom(models.Model):
+class Classroom(BaseModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField('Nome da turma: 0ª ANO', max_length=15)
     year = models.PositiveIntegerField('Ano letivo')

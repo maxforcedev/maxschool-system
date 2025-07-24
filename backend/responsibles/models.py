@@ -2,9 +2,10 @@ from django.db import models
 from accounts.models import User
 from core import choices
 from core.models import Address
+from schools.models import BaseModel
 
 
-class Responsible(models.Model):
+class Responsible(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     relationship = models.CharField(max_length=20, choices=choices.RelationshipType.choices)

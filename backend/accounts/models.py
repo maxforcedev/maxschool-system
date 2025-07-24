@@ -8,6 +8,7 @@ from core import choices
 
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    school = models.ForeignKey("schools.School", on_delete=models.CASCADE, null=True, related_name='users')
     name = models.CharField(max_length=150)
     email = models.EmailField(unique=True)
     cpf = models.CharField('CPF', unique=True, max_length=14)

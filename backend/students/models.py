@@ -1,8 +1,9 @@
 from django.db import models
 from core import choices
+from schools.models import BaseModel
 
 
-class Student(models.Model):
+class Student(BaseModel):
     user = models.OneToOneField('accounts.User', on_delete=models.CASCADE)
     status = models.CharField('Status', max_length=20, choices=choices.StudentStatus.choices, default=choices.StudentStatus.ACTIVE)
     gender = models.CharField('Gênero', choices=choices.Gender.choices, blank=True, null=True)
