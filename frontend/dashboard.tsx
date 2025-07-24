@@ -4,9 +4,9 @@ import { useState } from "react"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb"
-import { TeacherSidebar } from "./components/teacher-sidebar"
+import { TeacherSidebar } from "./components/teacher/teacher-sidebar"
 import { StudentSidebar } from "./components/student/student-sidebar"
-import { TeacherDashboard } from "./components/teacher-dashboard"
+import { TeacherDashboard } from "./components/teacher/teacher-dashboard"
 import { StudentDashboard } from "./components/student/student-dashboard"
 import {
   mockUsers,
