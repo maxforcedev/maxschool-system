@@ -8,19 +8,11 @@ User = get_user_model()
 
 
 class RegisterView(generics.CreateAPIView):
-    """
-    POST /api/v1/accounts/register/
-    Registro de usuários.
-    """
     serializer_class = serializers.RegisterSerializer
     permission_classes = [permissions.AllowAny]
 
 
 class MeView(APIView):
-    """
-    GET /api/v1/accounts/me/
-    Informação do perfil logado
-    """
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):

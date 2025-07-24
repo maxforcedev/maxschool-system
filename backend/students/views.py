@@ -14,7 +14,7 @@ from core.utils import sendmail_welcome
 
 class StudentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
+    filter_backends = [filters.StudentFilter, OrderingFilter]
     ordering_fields = ['user__name', 'birth_date', 'enrollment_date']
     ordering = ['user__name']  # padrão
 

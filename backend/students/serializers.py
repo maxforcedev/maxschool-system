@@ -5,7 +5,6 @@ from classes.models import Classroom
 from core.models.model_address import Address
 from core import validators
 from responsibles.models import Responsible
-from responsibles.serializers import ResponsibleSerializer
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -71,6 +70,7 @@ class UserWriteSerializer(serializers.ModelSerializer):
 
 
 class StudentSerializer(serializers.ModelSerializer):
+    from responsibles.serializers import ResponsibleSerializer
     address = AddressSerializer(source='user.address', read_only=True)
     user = UserReadSerializer(read_only=True)
     classroom = ClassroomSerializer(read_only=True)

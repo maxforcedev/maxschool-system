@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import Responsible
+from .models import Responsible
 from students.serializers import UserWriteSerializer, AddressSerializer, UserReadSerializer
 
 
