@@ -13,19 +13,19 @@ from core.utils import sendmail_welcome
 
 
 class StudentViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    #  permission_classes = [IsAuthenticated]
     filter_backends = [filters.StudentFilter, OrderingFilter]
     ordering_fields = ['user__name', 'birth_date', 'enrollment_date']
     ordering = ['user__name']
 
-    def get_permissions(self):
+    """def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
             return [IsAuthenticated(), IsSchoolStaff()]
         if self.action == 'update_my_data':
             return [IsAuthenticated(), IsStudentSelf()]
         if self.action in ['list', 'retrieve']:
             return [IsAuthenticated(), IsSchoolStaff()]
-        return super().get_permissions()
+        return super().get_permissions()"""
 
     def get_object(self):
         try:
