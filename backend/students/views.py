@@ -35,17 +35,17 @@ class StudentViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        qs = models.Student.objects.select_related('user', 'classroom')
+        qs = models.Student.objects.select_related('user', 'classroom').filter(school=user.school)
 
         if user.is_superuser or user.usertype in ['admin', 'director', 'coordinator', 'secretary']:
-            return qs
+            return qs.filter(school=user.school)
 
         elif user.usertype == 'teacher':
             classroom = Classroom.objects.filter(teacher_responsible=user)
             return qs.filter(classroom__in=classroom)
 
         elif user.usertype == 'student':
-            return qs.filter(user=user)
+            return qs.filter(user=user, school=user.school)
 
         return models.Student.objects.none()
 
@@ -57,7 +57,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        student = serializer.save()
+        student = serializer.save(school=request.user.school)
 
         sendmail_welcome(student.user)
 
@@ -72,7 +72,7 @@ class StudentViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['patch'], url_path='my')
     def update_my_data(self, request):
-        student = models.Student.objects.filter(user=request.user).first()
+        student = models.Student.objects.filter(user=request.user, school=request.user.school).first()
         if not student:
             return Response({'detail': 'Perfil do aluno não encontrado.'}, status=404)
 

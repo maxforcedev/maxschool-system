@@ -26,13 +26,13 @@ class ResponsibleViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        qs = models.Responsible.objects.select_related('user', 'address')
+        qs = models.Responsible.objects.select_related('user', 'address').filter(school=user.school)
 
         if user.is_superuser or user.usertype in ['admin', 'secretary', 'coordinator']:
-            return qs
+            return qs.filter(school=user.school)
 
         if user.usertype == 'responsible':
-            return qs.filter(user=user)
+            return qs.filter(user=user, school=user.school)
 
         return qs.none()
 
@@ -44,7 +44,7 @@ class ResponsibleViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        responsible = serializer.save()
+        responsible = serializer.save(school=request.user.school)
 
         sendmail_welcome(responsible.user)
 
@@ -59,7 +59,7 @@ class ResponsibleViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['patch'], url_path='my')
     def update_my_data(self, request):
-        responsible = models.Responsible.objects.filter(user=request.user).first()
+        responsible = models.Responsible.objects.filter(user=request.user, school=request.user.school).first()
         if not responsible:
             return Response({'detail': 'Perfil do responsável não encontrado.'}, status=404)
 

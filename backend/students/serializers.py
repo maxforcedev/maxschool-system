@@ -90,8 +90,10 @@ class StudentSerializer(serializers.ModelSerializer):
 
 
 class StudentWriteSerializer(serializers.ModelSerializer):
+    from responsibles.serializers import ResponsibleWriteSerializer
     user = UserWriteSerializer()
-    responsable = serializers.PrimaryKeyRelatedField(queryset=Responsible.objects.all(), many=True, required=False)
+    address = AddressSerializer()
+    responsibles = ResponsibleWriteSerializer(many=True, required=False)
 
     class Meta:
         model = Student
@@ -102,11 +104,15 @@ class StudentWriteSerializer(serializers.ModelSerializer):
             'status',
             'classroom',
             'notes',
+            'address',
+            'responsibles',
         ]
 
     def create(self, validated_data):
         user_data = validated_data.pop("user")
         birth_date = validated_data.get("birth_date")
+        responsibles_data = validated_data.pop("responsibles", [])
+        address_data = validated_data.pop("address")
 
         if birth_date:
             raw_password = birth_date.strftime("%d%m%Y")
@@ -120,11 +126,33 @@ class StudentWriteSerializer(serializers.ModelSerializer):
         user_serializer = UserWriteSerializer(data=user_data)
         user_serializer.is_valid(raise_exception=True)
         user = user_serializer.save()
-
         user.raw_password = raw_password
 
-        responsibles = validated_data.pop('responsibles', [])
-        student = Student.objects.create(user=user, **validated_data)
-        student.responsibles.set(responsibles)
+        address = Address.objects.create(**address_data)
+
+        student = Student.objects.create(user=user, address=address, **validated_data)
+
+        for responsible_data in responsibles_data:
+            responsible_user_data = responsible_data.pop("user")
+            responsible_address_data = responsible_data.pop("address", None)
+
+            responsible_user_data["user_type"] = "responsible"
+            responsible_user_serializer = UserWriteSerializer(data=responsible_user_data)
+            responsible_user_serializer.is_valid(raise_exception=True)
+            responsible_user = responsible_user_serializer.save()
+
+            if responsible_address_data:
+                responsible_address = Address.objects.create(**responsible_address_data)
+            else:
+                responsible_address = address
+
+            responsible = Responsible.objects.create(
+                user=responsible_user,
+                address=responsible_address,
+                **responsible_data
+            )
+            student.responsibles.add(responsible)
 
         return student
+
+

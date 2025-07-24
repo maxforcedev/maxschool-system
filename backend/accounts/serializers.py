@@ -14,8 +14,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
     def create(self, validated_data):
+        request = self.context.get("request")
+        school = getattr(request.user, "school", None)
+
         password = validated_data.pop('password')
-        user = models.User(**validated_data)
+        user = models.User(**validated_data, school=school)
         user.set_password(password)
         user.save()
         return user
