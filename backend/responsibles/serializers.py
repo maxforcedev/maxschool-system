@@ -8,11 +8,22 @@ from core.utils import sendmail_welcome
 
 class ResponsibleWriteSerializer(serializers.ModelSerializer):
     user = UserWriteSerializer()
-    address = AddressSerializer()
+    address = AddressSerializer(required=False)
+    use_student_address = serializers.BooleanField()
 
     class Meta:
         model = Responsible
-        fields = ['user', 'address', 'relationship', 'notes']
+        fields = ['user', 'address', 'relationship', 'notes', 'use_student_address']
+
+    def validate_address(self, value):
+        use_student_address = self.initial_data.get("use_student_address")
+        if isinstance(use_student_address, str):
+            use_student_address = use_student_address.lower() == "true"
+
+        if not use_student_address and not value:
+            raise serializers.ValidationError("Este campo é obrigatório quando não for usar o endereço do aluno.")
+
+        return value
 
     def create(self, validated_data):
         school = self.context["request"].user.school

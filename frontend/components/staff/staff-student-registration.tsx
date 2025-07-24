@@ -299,6 +299,7 @@ export function StaffStudentRegistration() {
           user: responsible.user,
           relationship: responsible.relationship,
           notes: responsible.notes,
+          use_student_address: responsible.use_student_address,
           ...(responsible.use_student_address ? {} : { address: responsible.address }),
         })),
       }
@@ -315,10 +316,29 @@ export function StaffStudentRegistration() {
 
       if (response.ok) {
         setMessage("Aluno cadastrado com sucesso!")
-        // Reset form ou redirecionar
       } else {
-        throw new Error("Erro ao cadastrar aluno")
+        const errorData = await response.json()
+        if (typeof errorData.detail === "string") {
+          setMessage(errorData.detail)
+        } else if (typeof errorData.detail === "object") {
+          const flattenErrors = (obj: any, prefix = ""): string[] => {
+            return Object.entries(obj).flatMap(([key, value]) => {
+              const fullKey = prefix ? `${prefix}.${key}` : key
+              if (Array.isArray(value)) {
+                return value.map((msg: string) => `${fullKey}: ${msg}`)
+              } else if (typeof value === "object") {
+                return flattenErrors(value, fullKey)
+              } else {
+                return [`${fullKey}: ${value}`]
+              }
+            })
+          }
+
+          const messages = flattenErrors(errorData.detail)
+          setMessage(messages[0] || "Erro ao cadastrar aluno.")
+        }
       }
+
     } catch (error) {
       setMessage("Erro ao cadastrar aluno. Tente novamente.")
       console.error("Erro:", error)

@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.filters import OrderingFilter
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ValidationError
 from django.http import Http404
 
 from . import serializers, models, filters
@@ -56,13 +56,22 @@ class StudentViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        student = serializer.save(school=request.user.school)
+        try:
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            student = serializer.instance
+            sendmail_welcome(student.user)
+            read_serializer = serializers.StudentSerializer(student)
+            return Response(read_serializer.data, status=status.HTTP_201_CREATED)
 
-        sendmail_welcome(student.user)
+        except ValidationError as e:
+            print("VALIDATION ERROR:", e.detail)
+            return Response({"detail": e.detail}, status=400)
 
-        read_serializer = serializers.StudentSerializer(student)
-        return Response(read_serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            print("UNEXPECTED ERROR:", str(e))
+            return Response({"detail": "Erro inesperado no servidor."}, status=500)
+
 
     def perform_create(self, serializer):
         school = self.request.user.school
