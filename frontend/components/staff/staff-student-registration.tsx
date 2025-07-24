@@ -278,6 +278,7 @@ export function StaffStudentRegistration() {
       setCurrentStep(currentStep - 1)
     }
   }
+  const baseURL = process.env.NEXT_PUBLIC_API_URL || "/api"
 
   const handleSubmit = async () => {
     if (!validateStep(3)) return
@@ -303,8 +304,8 @@ export function StaffStudentRegistration() {
       }
 
       console.log("Payload enviado:", JSON.stringify(payload, null, 2))
-
-      const response = await fetch("/api/students", {
+      const baseURL = process.env.NEXT_PUBLIC_API_URL || "/api"
+      const response = await fetch(`${baseURL}/students/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
