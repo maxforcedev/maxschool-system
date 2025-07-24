@@ -58,7 +58,7 @@ interface StudentFormData {
 }
 
 const mockClassrooms = [
-  { id: "", name: "1º Ano A - Manhã" },
+  { id: "047946a8980849d68733377c5a8bf188", name: "1º Ano A - Manhã" },
   { id: "uuid-2", name: "1º Ano B - Tarde" },
   { id: "uuid-3", name: "2º Ano A - Manhã" },
   { id: "uuid-4", name: "2º Ano B - Tarde" },
