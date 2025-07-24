@@ -16,7 +16,7 @@ class StudentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     filter_backends = [filters.StudentFilter, OrderingFilter]
     ordering_fields = ['user__name', 'birth_date', 'enrollment_date']
-    ordering = ['user__name']  # padrão
+    ordering = ['user__name']
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
@@ -63,6 +63,12 @@ class StudentViewSet(viewsets.ModelViewSet):
 
         read_serializer = serializers.StudentSerializer(student)
         return Response(read_serializer.data, status=status.HTTP_201_CREATED)
+
+    def perform_create(self, serializer):
+        school = self.request.user.school
+        if not school:
+            raise serializers.ValidationError("Usuário autenticado não está vinculado a uma escola.")
+        serializer.save(school=school)
 
     def destroy(self, request, *args, **kwargs):
         student = self.get_object()

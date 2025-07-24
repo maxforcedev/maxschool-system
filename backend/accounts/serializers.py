@@ -3,6 +3,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from django.utils import timezone
 from . import models
+from core import validators
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -11,6 +12,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
         fields = ['id', 'name', 'email', 'password', 'user_type']
+        extra_kwargs = {'password': {'write_only': True, 'required': False}}
         read_only_fields = ['id']
 
     def create(self, validated_data):
@@ -53,6 +55,56 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
         fields = ['id', 'name', 'email', 'user_type']
+
+
+class UserReadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = ['id', 'name', 'email', 'cpf', 'phone', 'user_type']
+
+
+class UserWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = fields = ['name', 'email', 'cpf', 'phone', 'password', 'user_type']
+        extra_kwargs = {'password': {'write_only': True, 'required': False}}
+
+    def validate_cpf(self, value):
+        cpf = ''.join(filter(str.isdigit, value))
+
+        if cpf and len(cpf) == 11:
+            validators.validate_cpf(cpf)
+        if models.User.objects.filter(cpf=cpf).exists():
+            raise serializers.ValidationError('O CPF informado ja está cadastrado em nosso sistema.')
+        return cpf
+
+    def validate_phone(self, value):
+        phone = ''.join(filter(str.isdigit, value))
+
+        if len(phone) not in [10, 11]:
+            raise serializers.ValidationError('Telefone deve conter 10 ou 11 dígitos.')
+        return phone
+
+    def validate_email(self, value):
+        email = value.lower().strip()
+
+        if models.User.objects.filter(email=email).exists():
+            raise serializers.ValidationError('Este e-mail já está em uso.')
+        return email
+
+    def create(self, validated_data):
+        user_type = validated_data.get('user_type', 'student')
+        user = models.User(
+            name=validated_data['name'],
+            email=validated_data['email'].lower().strip(),
+            user_type=user_type,
+            cpf=validated_data['cpf'],
+            phone=validated_data['phone']
+        )
+        password = validated_data.pop("password", None)
+        user.set_password(password)
+        user.save()
+        return user
 
 
 class ResetPasswordSerializer(serializers.Serializer):

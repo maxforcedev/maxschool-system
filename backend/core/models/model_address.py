@@ -3,7 +3,7 @@ from django.db import models
 
 class Address(models.Model):
     user = models.OneToOneField('accounts.User', on_delete=models.CASCADE)
-    zip_code = models.CharField('CEP', max_length=8)
+    zip_code = models.CharField('CEP', max_length=9)
     street = models.CharField('Nome da rua/avenida', max_length=60)
     number = models.CharField('Numero', max_length=10)
     neighborhood = models.CharField('Bairro', max_length=50)

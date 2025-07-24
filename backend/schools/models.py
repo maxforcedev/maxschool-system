@@ -1,6 +1,6 @@
+import uuid
 from django.db import models
 from core.models import Address
-import uuid
 
 
 class School(models.Model):

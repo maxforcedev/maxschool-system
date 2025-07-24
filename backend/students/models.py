@@ -1,5 +1,6 @@
 from django.db import models
 from core import choices
+from core.models import Address
 from schools.models import BaseModel
 
 
@@ -13,6 +14,7 @@ class Student(BaseModel):
     notes = models.TextField('Observações internas', blank=True, null=True)
     classroom = models.ForeignKey('classes.Classroom', on_delete=models.SET_NULL, null=True, blank=True, related_name='students')
     responsibles = models.ManyToManyField('responsibles.Responsible', related_name='students')
+    address = models.ForeignKey(Address, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.name
