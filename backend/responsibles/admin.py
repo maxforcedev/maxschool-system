@@ -1,12 +1,10 @@
-import django_filters
-from core import choices
+from django.contrib import admin
 from .models import Responsible
 
 
-class ResponsibleFilter(django_filters.FilterSet):
-    name = django_filters.CharFilter(field_name='user__name', lookup_expr='icontains')
-    relationship = django_filters.ChoiceFilter(choices=choices.RelationshipType.choices)
-
-    class Meta:
-        model = Responsible
-        fields = ['name', 'relationship']
+@admin.register(Responsible)
+class ResponsibleAdmin(admin.ModelAdmin):
+    list_display = ('user', 'relationship')
+    list_filter = ('relationship',)
+    search_fields = ('user__name', 'user__email', 'user__cpf')
+    autocomplete_fields = ('user', 'address')

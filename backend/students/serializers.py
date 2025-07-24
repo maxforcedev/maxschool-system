@@ -3,7 +3,7 @@ from .models import Student
 from accounts.models import User
 from classes.models import Classroom
 from core.models.model_address import Address
-from core import validators
+from core import validators, utils
 from responsibles.models import Responsible
 
 
@@ -140,6 +140,8 @@ class StudentWriteSerializer(serializers.ModelSerializer):
             responsible_user_serializer = UserWriteSerializer(data=responsible_user_data)
             responsible_user_serializer.is_valid(raise_exception=True)
             responsible_user = responsible_user_serializer.save()
+
+            utils.sendmail_welcome(responsible_user)
 
             if responsible_address_data:
                 responsible_address = Address.objects.create(**responsible_address_data)
